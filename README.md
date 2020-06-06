@@ -28,12 +28,14 @@ You might, therefore, want to change the default contrast settings. If your data
 Check your contrasts again, to make sure they're changed: ```options()$contrasts```
 
 Now, you can conduct your ANOVA. 
+
 ```Anova(lm(dependent_variable ~ independent_variable1 * independent_variable2, data = name_of_dataset), type = 3)```
 Notice how the ANOVA was conducted with a linear model as its input. 
 
 Suppose you're conducting a simple ecology experiment investigating the effects of the pH and temperature of soil on the number of plant species growing in that soil. However, you don't have access to the numerical data, and so all of your data is categorical: you have 3 pH categories: "Acidic", "Neutral", and "Basic", and you have three temperature categories: "High", "Medium", and "Low". You do, however, have the exact number of plant species growing in your various soil samples. Your dataset is called plant_species_soil_data.
 
 Your code would look like this:
+
 ```Anova(lm(plant_species ~ pH * temperature, data = plant_species_soil_data), type = 3) ```
 
 Don't forget to test assumptions of the ANOVA!
@@ -43,7 +45,8 @@ But suppose you wanted to make sure there were no confounding variables affectin
 Unfortunately, you find that the wind speed does differ significantly between your soil samples. This could affect your results! 
 
 Luckily, the ```Anova()``` model will allow you to include wind speed as a predictor variable, since it uses ```lm()``` as an input. Your code would then be modified to look something like this:
-```Anova(lm(plant_secies ~ ph * temperature + wind_speed, data = plant_species_soil_data), type = 3)
+
+```Anova(lm(plant_secies ~ ph * temperature + wind_speed, data = plant_species_soil_data), type = 3)```
 
 
 

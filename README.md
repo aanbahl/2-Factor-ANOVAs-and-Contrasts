@@ -43,7 +43,7 @@ Your code would look like this:
 
 Don't forget to test assumptions of the ANOVA!
 
-But suppose you wanted to make sure there were no confounding variables affecting your experiment? You would probably measure other variables, such as wind speed, humidity, the presence of certain ions in the soil. In order to make sure none of these conditions significantly differd between your soil samples, you could conduct a simple one way ANOVA with the ```aov()``` function in the car package to ensure that there are no significant difference between these variables among your samples. Don't forget to test assumptions!
+But suppose you wanted to make sure there were no confounding variables affecting your experiment? You would probably measure other variables, such as wind speed, humidity, the presence of certain ions in the soil. In order to make sure none of these conditions significantly differed between your soil samples, you could conduct a simple one way ANOVA with the ```aov()``` function in the car package to ensure that there are no significant difference between these variables among your samples. Don't forget to test assumptions!
 
 Unfortunately, you find that the wind speed does differ significantly between your soil samples. This could affect your results! 
 

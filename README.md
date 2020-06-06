@@ -49,7 +49,29 @@ Unfortunately, you find that the wind speed does differ significantly between yo
 
 Luckily, the ```Anova()``` model will allow you to include wind speed as a predictor variable, since it uses ```lm()``` as an input. Your code would then be modified to look something like this:
 
-```Anova(lm(plant_secies ~ ph * temperature + wind_speed, data = plant_species_soil_data), type = 3)```
+```Anova(lm(plant_secies ~ pH * temperature + wind_speed, data = plant_species_soil_data), type = 3)```
+
+# ANOVA Table Interpretation and Reference Groups
+
+The output from your ANOVA should look something like this:
+```
+Anova Table (Type III tests)
+
+Response: plant_species
+                       Sum Sq Df  F value    Pr(>F)    
+(Intercept)             63184  1 153.1307 6.328e-16 ***
+pH                        686  2   0.8310   0.44234    
+temperature               527  2   0.6386   0.53284    
+wind_speed                121  1   0.2934   0.59079    
+pH: temperature          4313  4   2.6131   0.04803 *  
+Residuals               18155 44                       
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+```
+The table shows a significant interaction between the pH groups and the temperature groups. However, there are many possible combinations. Is there a significant interaction between basic pH and low temperature? What about between neutral pH and medium temperature? To find out where the interaction is, further tests will have to be conducted.
+
+
 
 
 

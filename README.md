@@ -26,7 +26,7 @@ You can check the default contrasts with the following code:
 ``` options()$contrasts```
 
 You might, therefore, want to change the default contrast settings. If your data are unordered, you'll want to change the default ```contr.treatment``` to ```contr.sum```. This can be done with the following code:
-```options(contrasts = c("contr.sum", "contr.poly")```
+```options()contrasts = c("contr.sum", "contr.poly")```
 Check your contrasts again, to make sure they're changed: ```options()$contrasts```
 
 Now, you can conduct your ANOVA. 

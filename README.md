@@ -22,7 +22,9 @@ The first thing to be certain of in Type III ANOVAs is contrasts. What is a cont
 According to the ```help(Anova)``` page in R (Fox, 2016), in Type III ANOVAs, you may need to change the default contrast settings for your Anova in order to obtain "sensible results". The default settings are ```contr.treatment``` (for unordered data) and ```contr.poly``` (for ordered data). 
 
 You can check the default contrasts with the following code:
+
 ``` options()$contrasts```
+
 You might, therefore, want to change the default contrast settings. If your data are unordered, you'll want to change the default ```contr.treatment``` to ```contr.sum```. This can be done with the following code:
 ```options(contrasts = c("contr.sum", "contr.poly")```
 Check your contrasts again, to make sure they're changed: ```options()$contrasts```
@@ -30,6 +32,7 @@ Check your contrasts again, to make sure they're changed: ```options()$contrasts
 Now, you can conduct your ANOVA. 
 
 ```Anova(lm(dependent_variable ~ independent_variable1 * independent_variable2, data = name_of_dataset), type = 3)```
+
 Notice how the ANOVA was conducted with a linear model as its input. 
 
 Suppose you're conducting a simple ecology experiment investigating the effects of the pH and temperature of soil on the number of plant species growing in that soil. However, you don't have access to the numerical data, and so all of your data is categorical: you have 3 pH categories: "Acidic", "Neutral", and "Basic", and you have three temperature categories: "High", "Medium", and "Low". You do, however, have the exact number of plant species growing in your various soil samples. Your dataset is called plant_species_soil_data.

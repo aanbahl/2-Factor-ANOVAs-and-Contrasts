@@ -26,7 +26,9 @@ You can check the default contrasts with the following code:
 ``` options()$contrasts```
 
 You might, therefore, want to change the default contrast settings. If your data are unordered, you'll want to change the default ```contr.treatment``` to ```contr.sum```. This can be done with the following code:
-```options()contrasts = c("contr.sum", "contr.poly")```
+
+```options(contrasts = c("contr.sum", "contr.poly"))```
+
 Check your contrasts again, to make sure they're changed: ```options()$contrasts```
 
 Now, you can conduct your ANOVA. 
@@ -51,7 +53,7 @@ Luckily, the ```Anova()``` model will allow you to include wind speed as a predi
 
 ```Anova(lm(plant_secies ~ pH * temperature + wind_speed, data = plant_species_soil_data), type = 3)```
 
-# ANOVA Table Interpretation and Reference Groups
+# ANOVA Table Interpretation 
 
 The output from your ANOVA should look something like this:
 ```
@@ -73,16 +75,29 @@ The table shows a significant difference between temperature groups. However, wh
 
 A linear model (found with the ```lm()``` function) can show exactly in which groups these interactions are present. However, you first need to decide what your reference groups will be.
 
+# Reference Groups and Linear Model Interpretation
+
 What exactly is a reference group? In a linear model, when more than two groups exist for an independent variable, pair-wise comparisons will be done with one group as the reference group - the group which the other groups will be compared to. For example, in our ecology experiment, "neutral" pH or "medium" temperature could be our reference groups, and all comparisons will be conducted in reference to these groups. Ideally, our linear model will show if there is a significant difference between "basic" and "neutral" pHs, or if the difference lies between "low" and "medium" temperatures. However, these reference groups will need to be specified. 
 
 R will have already assigned one of your groups are the default group. This can be checked with the following code:
+
+``` contrasts(dataset$independent_variable1) ```  which would be  ```contrasts(plant_species_soil_data$temperature``` in our experiment.
+
+This code would give the following output:
 ```
-contrasts(dataset$independent_variable1)``` which would be ```contrasts(plant_species_soil_data$temperature``` in our experiment
+          high low
+medium      0   0
+high        1   0
+low         0   1
 ```
-Suppose your default reference groups were "Medium" temperature and "neutral". Then, you could conduct your linear model:
+Here, you can see that soils of ```medium``` temperature are your reference group, since medium gives a value of ```0``` when compared across tabled across high and low temperature soils.
+
+So suppose your default reference groups were "medium" temperature and "neutral" pH. Then, you could conduct your linear model. Be sure to change your default contrasts back to ```contr.treatment``` and ```contr.poly``` for your linear model!
+
 ``` 
+options(contrasts = ("contr.treatment", "contr.poly"))
 plant_species_lm <- lm(plant_species ~ pH * temperature + wind_speed, data = plant_species_soil_data)
-summary(COMT_DigitsTotal) 
+summary(plant_species_lm) 
 ```
 The output would look something like this:
 ```
@@ -113,12 +128,53 @@ Residual standard error: 1.897 on 44 degrees of freedom
 Multiple R-squared:  0.2509,	Adjusted R-squared:  0.0977 
 F-statistic: 1.638 on 9 and 44 DF,  p-value: 0.1342
 ```
-How is this interpreted? The first line of the table after the intercept is titled ```pHAcidic```. This line is comparing medium temperature soil samples (since medium is our reference group) that have an acidic pH to medium temperature soil samples that have a neutral pH (since neutral is our reference group). Keeping wind speed constant, the model finds no significant difference between these two groups.
+How is this interpreted? The second line of the table after the intercept is titled ```pHBasic```. This line is comparing medium temperature soil samples (since medium is our reference group) that have a basic pH to medium temperature soil samples that have a neutral pH (since neutral is our reference group). Keeping wind speed constant, the model finds no significant difference between these two groups.
 
 Let's move on to temperature. The third line of the table is titled ```temperatureHigh```. This line compares neutral pH soil samples (since neutral is our reference group) that have high temperatures to neutral pH soil samples that have medium temperatures (since medium is our reference group). Here, there is a significant interaction as the P value is less than 0.05. The model finds that neutral pH soil samples with higher temperatures house 2.02 more species of plants than neutral pH soil samples with medium temperatures (as indicated by the ```Estimate``` column),  keeping wind speed constant.
 
-What about the interaction term? This is where it gets tricky. Think of the interaction term as the difference of differences. If ```pHAcidic``` is looking at the difference in numbers of plant species in acidic soils and neutral soils, and ```temperatureHigh``` is looking at the difference in numbers of plant species in high and medium temperature soils, the interaction term for these values is the difference of the two values. 
+What about the interaction term? This is where it gets tricky. Think of the interaction term as the difference of differences. If ```pHBasic``` is looking at the difference in numbers of plant species in acidic soils and neutral soils, and ```temperatureHigh``` is looking at the difference in numbers of plant species in high and medium temperature soils, the interaction term for these values is the difference of the two values. 
 
-In our ecology experiment, we see that the difference in number of plant species between neutral pH high temperature and low temperature soils is signficantly different than the difference in number of plant species between basic and acidic soils with medium temperatures. 
+In our ecology experiment, we see that the difference in number of plant species between neutral pH high temperature and medium temperature soils is signficantly different than the difference in number of plant species between neutral and acidic soils with medium temperatures. This could mean that in the neutral pH soils, medium temperature soils had more/less plant species than low temperature soils. However, in the basic pH group, medium temperature soils had more/less plant species than low temperature soils. 
 
+This interaction term is often difficult to interpret, so here you should probably create an interaction plot to visually view your data. You can also create bar graphs and look at the vertical distance between the bar heights in question to confirm your interaction "difference of differences" analysis. 
 
+So far, in your pH groups you've only compared neutral and basic pHs and high and medium temperatures. But what if you wanted to compare neutral and acidic pHs? Or medium and low temperatures? Or what about acidic and basic pHs? This is where you'd have to change the reference group, so that the group that all other groups are being compared to is now different. This can be done with the following code:
+```
+plant_species_soil_data$pH <- factor(plant_species_soil_data$pH, levels = c("Acidic","Neutral","Basic"))
+plant_species_soil_data$temperature <- factor(plant_species_soil_data$temperature, levels = c("High","Medium","Low"))
+```
+You just changed your pH reference group to ```Acidic``` and your temperature reference group to ```High```. Since your ```levels``` vector is ordered, the first element will be the reference group (which, in these two cases, is ```High``` and ```Acidic```.)
+
+As you did previously, check your reference groups with the following code: ```contrasts(dataset$independent_variable)```
+
+Now, you can run your linear model again with the same code as you did with the previous linear model, but the output will be different, as you are now comparing different groups.
+
+```
+Call:
+lm(formula = SPWM_WME_T1 ~ COMT2 * group_membership + Cancer_Treatments, 
+    data = clean_data)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-37.000 -11.470  -1.055  11.650  54.091 
+
+Coefficients:
+                                Estimate Std. Error t value Pr(>|t|)   
+(Intercept)                       26.978      8.505   3.172  0.00276 **
+pHNeutral                         13.167     11.728   1.123  0.26765   
+pHBasic                           19.515     14.239   1.371  0.17747   
+temperatureMedium                 26.272     13.247   1.983  0.05360 . 
+temperatureLow                     1.989     13.146   0.151  0.88044   
+wind_speed                         6.135     11.326   0.542  0.59079   
+pHNeutral:temperatureMedium       -9.417     17.310  -0.544  0.58919   
+pHBasic:temperatureMedium        -41.765     20.225  -2.065  0.04485 * 
+pHNeutral:temperatureLow          -5.224     16.918  -0.309  0.75895   
+pHBasic:temperatureLow       8.233     20.334   0.405  0.68751   
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 20.31 on 44 degrees of freedom
+Multiple R-squared:  0.2654,	Adjusted R-squared:  0.1152 
+F-statistic: 1.766 on 9 and 44 DF,  p-value: 0.1024
+```
+You can now interpret this linear model as you did the previous one, and it will give you different comparisons, with different results. 

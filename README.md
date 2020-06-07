@@ -178,3 +178,9 @@ Multiple R-squared:  0.2654,	Adjusted R-squared:  0.1152
 F-statistic: 1.766 on 9 and 44 DF,  p-value: 0.1024
 ```
 You can now interpret this linear model as you did the previous one, and it will give you different comparisons, with different results. 
+
+# Works Cited
+
+Fox, J. (2016) Applied Regression Analysis and Generalized Linear Models, Third Edition. Sage.
+
+Fox, J. and Weisberg, S. (2019) An R Companion to Applied Regression, Third Edition, Sage.

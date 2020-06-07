@@ -71,13 +71,13 @@ Residuals               18155 44
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 ```
-The table shows a significant difference between temperature groups. However, which group is significantly different from the other? Is it "High"? What about "low"? To find out, further tests will have to be conducted. The table also shows a significant interaction between the pH groups and the temperature groups. However, like in the case of temperature, there are many possible ways in which this interaction could have occurred. Is there a significant interaction between basic pH and low temperature? What about between neutral pH and medium temperature? 
+The table shows a significant difference between temperature groups. However, which group is significantly different from the other? Is it ```High``` temperature? What about ```Low``` temperature? To find out, further tests will have to be conducted. The table also shows a significant interaction between the pH groups and the temperature groups. However, like in the case of temperature, there are many possible ways in which this interaction could have occurred. Is there a significant interaction between ```Basic``` pH and ```Low```temperature? What about between ```Neutral``` pH and ```Medium``` temperature? 
 
 A linear model (found with the ```lm()``` function) can show exactly in which groups these interactions are present. However, you first need to decide what your reference groups will be.
 
 # Reference Groups and Linear Model Interpretation
 
-What exactly is a reference group? In a linear model, when more than two groups exist for an independent variable, pair-wise comparisons will be done with one group as the reference group - the group which the other groups will be compared to. For example, in our ecology experiment, "neutral" pH or "medium" temperature could be our reference groups, and all comparisons will be conducted in reference to these groups. Ideally, our linear model will show if there is a significant difference between "basic" and "neutral" pHs, or if the difference lies between "low" and "medium" temperatures. However, these reference groups will need to be specified. 
+What exactly is a reference group? In a linear model, when more than two groups exist for an independent variable, pair-wise comparisons will be done with one group as the reference group - the group which the other groups will be compared to. For example, in our ecology experiment, ```"Neutral"``` pH or ```"Medium"``` temperature could be our reference groups, and all comparisons will be conducted in reference to these groups. Ideally, our linear model will show if there is a significant difference between ```Basic``` and ```Neutral``` pHs, or if the difference lies between ```Low``` and ```Medium``` temperatures. However, these reference groups will need to be specified. 
 
 R will have already assigned one of your groups are the default group. This can be checked with the following code:
 
@@ -85,14 +85,14 @@ R will have already assigned one of your groups are the default group. This can 
 
 This code would give the following output:
 ```
-          high low
-medium      0   0
-high        1   0
-low         0   1
+          High Low
+Medium      0   0
+High        1   0
+Low         0   1
 ```
-Here, you can see that soils of ```medium``` temperature are your reference group, since medium gives a value of ```0``` when compared across tabled across high and low temperature soils.
+Here, you can see that soils of ```Medium``` temperature are your reference group, since ```Medium``` gives a value of ```0``` when compared across tabled across ```High``` and ```Low``` temperature soils.
 
-So suppose your default reference groups were "medium" temperature and "neutral" pH. Then, you could conduct your linear model. Be sure to change your default contrasts back to ```contr.treatment``` and ```contr.poly``` for your linear model!
+So suppose your default reference groups were ```Medium``` temperature and ```Neutral``` pH. Then, you could conduct your linear model. Be sure to change your default contrasts back to ```contr.treatment``` and ```contr.poly``` for your linear model!
 
 ``` 
 options(contrasts = ("contr.treatment", "contr.poly"))
@@ -128,7 +128,7 @@ Residual standard error: 1.897 on 44 degrees of freedom
 Multiple R-squared:  0.2509,	Adjusted R-squared:  0.0977 
 F-statistic: 1.638 on 9 and 44 DF,  p-value: 0.1342
 ```
-How is this interpreted? The second line of the table after the intercept is titled ```pHBasic```. This line is comparing medium temperature soil samples (since medium is our reference group) that have a basic pH to medium temperature soil samples that have a neutral pH (since neutral is our reference group). Keeping wind speed constant, the model finds no significant difference between these two groups.
+How is this interpreted? For each line that contains one subgroup, you are comparing that subgroup with the reference subgroup, keeping the other independent variable constant. For example, the second line of the table after the intercept is titled ```pHBasic```. This line is comparing medium temperature soil samples (since medium is our reference group) that have a basic pH to medium temperature soil samples that have a neutral pH (since neutral is our reference group). Keeping wind speed constant, the model finds no significant difference between these two groups.
 
 Let's move on to temperature. The third line of the table is titled ```temperatureHigh```. This line compares neutral pH soil samples (since neutral is our reference group) that have high temperatures to neutral pH soil samples that have medium temperatures (since medium is our reference group). Here, there is a significant interaction as the P value is less than 0.05. The model finds that neutral pH soil samples with higher temperatures house 2.02 more species of plants than neutral pH soil samples with medium temperatures (as indicated by the ```Estimate``` column),  keeping wind speed constant.
 
